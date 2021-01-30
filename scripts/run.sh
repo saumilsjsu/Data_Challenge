@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./run_mysql.sh
+./run_mongo.sh & ./run_mysql.sh

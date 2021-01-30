@@ -7,8 +7,10 @@ services:
       context: .
     ports:
       - '3306:3306'
+      - '27017:27017'
     expose:
       - '3306'
+      - '27017'
   # mongodb:
   #   build:
   #     dockerfile: ./Dockerfile.mongodb

@@ -5,6 +5,7 @@
 import pymysql
 from sqlalchemy import create_engine
 import pandas as pd
+from pymongo import MongoClient
 
 username = 'root'
 password = 'root'
@@ -17,6 +18,9 @@ query = ("SHOW FULL PROCESSLIST")
 cursor.execute(query)
 for item in cursor:
   print(item)
+
+client = MongoClient()
+client.db
 # engine = create_engine(
 #   'mysql+pymysql://{}:{}@{}:{}'.format(
 #     username,password,end_point,port)

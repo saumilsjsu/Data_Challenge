@@ -4,3 +4,4 @@ pymysql
 sqlalchemy
 mysql-connector-python
 cryptography
+pymongo
