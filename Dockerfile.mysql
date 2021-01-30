@@ -1,0 +1,33 @@
+FROM ubuntu
+
+WORKDIR /temp
+
+# installing mysql
+COPY scripts/install_mysql.sh .
+COPY scripts/run_mysql.sh .
+RUN chmod 777 ./run_mysql.sh
+RUN ./install_mysql.sh
+RUN mkdir /var/run/mysqld
+RUN chown -R mysql:mysql /var/run/mysqld
+
+# installing python and requirements packages
+RUN apt-get -y install python3
+RUN apt-get -y install python3-pip
+
+COPY scripts/etl1.py .
+COPY ./requirements.txt .
+
+RUN python3 -m pip install -r ./requirements.txt
+
+# installing mongo
+RUN apt-get -y install wget
+COPY scripts/install_mongo.sh .
+RUN chmod 777 ./install_mongo.sh
+RUN ./install_mongo.sh
+COPY scripts/run_mongo.sh .
+RUN chmod 777 ./run_mongo.sh
+
+COPY scripts/run.sh .
+RUN chmod 777 ./run.sh
+
+CMD ["/temp/run.sh"]

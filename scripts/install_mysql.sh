@@ -1,28 +1,22 @@
 #!/bin/bash
 
+# TODO: Should be downloading this from an AWS key store
+#		rather than hardcoding it.
+MYSQL_PASSWORD="root"
 
-## Download mysql tar installer ##
-#curl https://cdn.mysql.com//Downloads/MySQL-8.0/mysql-8.0.23-macos10.15-x86_64.tar.gz -o mysql-8.0.23.tar.gz
+# Download and Install the Latest Updates for the OS
+apt-get update && apt-get upgrade -y
 
-## Unpack ##
-rm -rf /usr/local/mysql
-mkdir -p /usr/local/mysql
-cp mysql-8.0.23.tar.gz /usr/local
+export DEBIAN_FRONTEND="noninteractive"
 
-## Install it ##
+debconf-set-selections <<< "mysql-server mysql-server/root_password password $MYSQL_PASSWORD"
+debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $MYSQL_PASSWORD"
 
-#groupadd mysql
-#useradd -r -g mysql -s /bin/false mysql
-cd /usr/local
-tar zxvf mysql-8.0.23.tar.gz 
-ln -s mysql-8.0.23 mysql
-cd mysql
-rm -rf mysql-files
-mkdir mysql-files
-chown mysql:mysql mysql-files
-chmod 750 mysql-files
-bin/mysqld --initialize --user=mysql
-bin/mysql_ssl_rsa_setup
+apt-get install -y mysql-server-8.0
 
-## Start the server ## 
-bin/mysqld_safe --user=mysql &   ## Or could use "systemctl start mysqld"
+mysql_secure_installation
+
+sed -i 's/127\.0\.0\.1/0\.0\.0\.0/g' /etc/mysql/my.cnf
+sed -i '/\[mysqld\]/a\lower_case_table_names=1' /etc/mysql/my.cnf
+echo "MySQL Password set to '${MYSQL_PASSWORD}'. Remember to delete ~/.mysql.passwd" | tee ~/.mysql.passwd; 
+
