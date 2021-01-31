@@ -6,5 +6,5 @@ docker-build:
 docker-up:
 	docker-compose up
 
-# enter-container:
-# 	docker exec -it $(docker ps | grep sfl_scientific_mysql | awk '{print $1}') python3 etl1.py
+# command to run the python script from within the running docker container
+# docker exec -it $(docker ps | grep sfl_scientific_mysql | awk '{print $1}') python3 etl1.py

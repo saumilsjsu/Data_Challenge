@@ -20,3 +20,5 @@ sed -i 's/127\.0\.0\.1/0\.0\.0\.0/g' /etc/mysql/my.cnf
 sed -i '/\[mysqld\]/a\lower_case_table_names=1' /etc/mysql/my.cnf
 echo "MySQL Password set to '${MYSQL_PASSWORD}'. Remember to delete ~/.mysql.passwd" | tee ~/.mysql.passwd; 
 
+mkdir /var/run/mysqld
+chown -R mysql:mysql /var/run/mysqld

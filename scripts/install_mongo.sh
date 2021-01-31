@@ -3,6 +3,9 @@
 # set noninteractive installation
 export DEBIAN_FRONTEND=noninteractive
 
+# install wget
+apt-get -y install wget
+
 #install tzdata package
 apt-get install -y tzdata
 

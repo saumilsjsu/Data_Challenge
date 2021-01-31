@@ -11,10 +11,3 @@ services:
     expose:
       - '3306'
       - '27017'
-  # mongodb:
-  #   build:
-  #     dockerfile: ./Dockerfile.mongodb
-  #     context: .
-  # pipeline:
-  #   build:
-  #     dockerfile: ./Dockerfile.pipeline
