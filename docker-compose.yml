@@ -11,3 +11,27 @@ services:
     expose:
       - '3306'
       - '27017'
+
+  tensorflow:
+    build:
+      dockerfile: ./Dockerfile.tensorflow
+      context: .
+    ports:
+      - '8500:8500'
+      - '8501:8501'
+    volumes:
+      - './models:/models'
+      - './src:/models/src'
+      - './Makefile:/models/Makefile'
+
+  tensorflow-serving:
+    image: tensorflow/serving
+    volumes:
+      - './models:/models'
+      - './models/models.config:/models/models.config'
+      - './models/test_model:/models/test_model'
+    ports:
+      - '8500:8500'
+      - '8501:8501'
+    command: --model_config_file=/models/models.config
+

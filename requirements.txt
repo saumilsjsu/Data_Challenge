@@ -1,7 +1,9 @@
 pandas
-numpy
+numpy~=1.19.2
 pymysql
 sqlalchemy
 mysql-connector-python
 cryptography
 pymongo
+tensorflow
+matplotlib
