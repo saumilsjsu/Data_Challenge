@@ -8,6 +8,7 @@ COPY scripts/run_mysql.sh .
 COPY scripts/install_mongo.sh .
 COPY scripts/run_mongo.sh .
 COPY scripts/run.sh .
+COPY data ./data
 
 # give executable permissions to the above scripts
 RUN chmod 777 ./install_mysql.sh

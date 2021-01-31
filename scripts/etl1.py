@@ -1,60 +1,38 @@
-''' Importing Libraries '''
+
+# Load Data into MySQL
+
 import pymysql
 from sqlalchemy import create_engine
 import pandas as pd
 from pymongo import MongoClient
-import json
-import pymongo
+import os
 
-''' Providing path for data '''
-path_data = "/Users/saumil0257/SFL_Scientific/data/user_data.csv"
 
-'''DB Connections '''
+path_data = os.path.join(".", "data", "user_data.csv")
 username = 'root'
 password = 'root'
 end_point = '127.0.0.1'
 port = '3306'
-schema = 'SFL_USER_DATA'
-table = 'users_data'
-engine = create_engine('mysql+pymysql://{}:{}@{}:{}'.format(username,password,end_point,port))
+engine = create_engine(
+  'mysql+pymysql://{}:{}@{}:{}'.format(
+    username,password,end_point,port)
+  )
 connection = pymysql.connect(user=username, passwd=password, host=end_point)
 cursor = connection.cursor()
-myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-mydb = myclient[schema]
-collection = mydb[table]
 
-'''Creating a schema on MYSQL '''
-sql = '''CREATE DATABASE IF NOT EXISTS SFL_USER_DATA;'''
+sql = '''CREATE DATABASE SFL_USER_DATA;'''
 engine.execute(sql)
 
-''' Read and Upload CSV to MYSQL '''
 df = pd.read_csv(path_data)
-df.to_sql(table,engine,schema=schema,if_exists="replace",index=False)
-print("Uploaded Data Successfully...")
+df.to_sql("user_data",engine,schema="SFL_USER_DATA",if_exists="replace",index=False)
 
-''' Extracting Data from MySQL'''
-sql = '''SELECT * FROM {}.{};'''.format(schema,table)
-df = pd.read_sql(sql,engine)
-print("Loaded Data [MySQL] Successfully...")
+print("Data Uploaded Successfully...")
 
-''' Transforming relational data to key-value pair '''
-records = json.loads(df.T.to_json()).values()
-print("Transformed Data Successfully...")
+client = MongoClient()
+client.db
 
-''' Loading data to NoSQL - MongoDB '''
-mydb.collection.insert(records)
-print("Loaded Data [MongoDB] Successfully...")
-
-
-
-
-
-
-
-
-
-# client = MongoClient()
-# client.db
+# sql = 'SHOW FULL PROCESSLIST;'
+# df = pd.read_sql(sql, engine)
 
 # engine.execute("SHOW DATABASES;")
 
